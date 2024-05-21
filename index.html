@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart.js Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="accidentChart" width="800" height="600"></canvas>
+    <script>
+        // Data
+        const accidentData = [
+            // Replace these example points with your actual data
+            {x: 0.1276, y: 51.5072, severity: 1},
+            {x: 0.1376, y: 51.5078, severity: 2},
+            {x: 0.1476, y: 51.5082, severity: 3},
+            // Add more data points here
+        ];
+
+        // Convert severity to color
+        function getColor(severity) {
+            if (severity === 1) {
+                return 'rgba(255, 99, 132, 0.5)';  // High severity
+            } else if (severity === 2) {
+                return 'rgba(255, 206, 86, 0.5)';  // Medium severity
+            } else {
+                return 'rgba(75, 192, 192, 0.5)';  // Low severity
+            }
+        }
+
+        // Chart.js configuration
+        const data = {
+            datasets: [{
+                label: 'Accidents',
+                data: accidentData,
+                backgroundColor: function(context) {
+                    return getColor(context.raw.severity);
+                },
+                borderColor: 'rgba(0, 0, 0, 1)',
+                borderWidth: 1,
+                pointRadius: 5
+            }]
+        };
+
+        const config = {
+            type: 'scatter',
+            data: data,
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Longitude'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Latitude'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Severity: ${context.raw.severity}`;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Initialize the chart
+        const myChart = new Chart(
+            document.getElementById('accidentChart'),
+            config
+        );
+    </script>
+</body>
+</html>
